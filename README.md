@@ -1,2 +1,21 @@
-# maynooth-geo-python
-Practical Python resources for geographical data analysis at Maynooth University.
+# Python for Geographical Data Analysis
+
+Practical Python learning resources for geographical data analysis at Maynooth University.
+
+This repository supports:
+
+- **GY674: Earth Science Data Analysis in Python**
+- **GY675: Visualising Inequality**
+
+The materials may also be useful to postgraduate researchers and staff who are beginning to use Python for data analysis.
+
+## Resources
+
+- [Python Quick Reference Guide](quick-reference/README.md)
+- Learning notebooks — coming soon
+- Worked examples — coming soon
+- Further resources — coming soon
+
+## Using the notebooks
+
+The notebooks are designed to run in Google Colab. Links to available notebooks and instructions for creating your own editable copy will be added here.
