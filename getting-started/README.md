@@ -29,17 +29,15 @@ Use the same Google Account throughout the course.
 
 ## 2. Open the test notebook
 
-Select the button below to open the test notebook in Google Colab:
+The test notebook is stored on GitHub as:
+
+[`00_test_google_colab.ipynb`](../notebooks/00_test_google_colab.ipynb)
+
+Select the button below to open it directly in Google Colab:
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaunharrigan/maynooth-geo-python/blob/main/notebooks/00_test_google_colab.ipynb)
 
-The notebook is called:
-
-```text
-00_test_google_colab.ipynb
-```
-
-Its purpose is simply to confirm that you can open and run a Python notebook before the first class.
+The notebook will confirm that you can run Python code and display a simple figure before the first class.
 
 ## 3. Save your own copy
 
@@ -51,9 +49,11 @@ When the notebook opens in Google Colab:
 
 Colab will normally save the copy in a Google Drive folder called **Colab Notebooks**.
 
+The notebook stored on GitHub remains unchanged. Your editable copy is stored separately in Google Drive.
+
 ## 4. Run the test
 
-Follow the short instructions inside the notebook.
+Follow the instructions inside the notebook.
 
 To run a code cell:
 
