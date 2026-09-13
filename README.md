@@ -1,5 +1,7 @@
 # Python for Geographical Data Analysis
 
+![Python connecting environmental and social geographical data analysis](maynooth_python_image.png)
+
 Practical Python learning resources for geographical data analysis at Maynooth University.
 
 This repository supports:
