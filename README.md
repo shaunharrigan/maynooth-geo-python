@@ -1,6 +1,6 @@
 # Python for Geographical Data Analysis
 
-![Python for geographical data analysis across climate, environment and society](python-geographical-data-banner.png)
+![Python for geographical data analysis across climate, environment and society](maynooth_geo_python_banner.png)
 
 Practical Python learning resources for geographical data analysis at Maynooth University.
 
