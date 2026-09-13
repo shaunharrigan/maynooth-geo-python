@@ -19,7 +19,7 @@ New to the course or to Python? Follow these three steps:
 
 Set up Google Colab, Google Drive and your course folders before beginning.
 
-### 2. [Course notebooks and worked examples](notebooks/README.md)
+### 2. [Course notebooks and worked examples](notebooks/)
 
 The main teaching materials for the modules, combining explanations, code demonstrations, guided exercises and geographical data-analysis examples.
 
