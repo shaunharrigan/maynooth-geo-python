@@ -4,7 +4,7 @@ Interactive Python notebooks for GY674 and GY675 will be added here.
 
 ## Test Google Colab
 
-### [`00_test_google_colab.ipynb`](00_test_google_colab.ipynb)
+[`00_test_google_colab.ipynb`](00_test_google_colab.ipynb)
 
 Use this test notebook to confirm that you can open, save and run a Python notebook before the first class.
 
