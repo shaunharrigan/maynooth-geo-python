@@ -546,7 +546,7 @@ The weekly course notebooks provide the main structured learning route. The reso
 
 #### [Project Pythia Foundations](https://foundations.projectpythia.org/)
 
-A community learning resource for Python-based computing in the geosciences. It is particularly valuable for the MSc Earth Science and Climate Change route and includes open tutorials on:
+A community learning resource for Python-based computing in the geosciences. It is particularly valuable for the MSc Climate Change and MSc in GIS/Remote Sensing route and includes open tutorials on:
 
 - NumPy and Pandas;
 - dates and calendars;
@@ -594,4 +594,4 @@ The principal detailed reference for Pandas and general data-analysis workflows.
 
 This is a living reference. Examples and links may be refined as the courses develop. Corrections and suggestions are welcome.
 
-Maintained by **Shaun Harrigan**, Department of Geography, Maynooth University.
+Maintained by **Shaun Harrigan**, ICARUS Climate Research Centre, Department of Geography, Maynooth University.
