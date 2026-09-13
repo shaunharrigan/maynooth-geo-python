@@ -19,20 +19,11 @@ New to the course or to Python? Follow these three steps:
 
 Set up Google Colab, Google Drive and your course folders before beginning.
 
-### 2. Course notebooks and worked examples — coming soon
+### 2. [Course notebooks and worked examples](notebooks/README.md)
 
-Use the weekly notebooks as the main route through the course. They combine explanations, code demonstrations, guided examples and exercises using geographical, environmental and social data.
+The main teaching materials for the modules, combining explanations, code demonstrations, guided exercises and geographical data-analysis examples.
 
-Student notebooks will include:
-
-- explanations of key concepts;
-- complete code demonstrations;
-- guided worked examples;
-- partially completed coding exercises;
-- questions for students to complete;
-- prompts for interpreting results.
-
-Fully completed solutions will be released separately when appropriate.
+Begin with the Google Colab test notebook. Additional notebooks and worked examples will be added as they are released.
 
 ### 3. [Use the Python Quick Reference Guide](quick-reference/README.md)
 
