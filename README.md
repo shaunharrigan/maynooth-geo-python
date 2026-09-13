@@ -9,12 +9,12 @@ This repository supports:
 
 The materials may also be useful to postgraduate researchers and staff who are beginning to use Python for data analysis.
 
-## Resources
+## Start here
 
 - [Python Quick Reference Guide](quick-reference/README.md)
+- [Recommended textbooks and further resources](quick-reference/README.md#12-learning-resources-and-documentation)
 - Learning notebooks — coming soon
 - Worked examples — coming soon
-- Further resources — coming soon
 
 ## Using the notebooks
 
