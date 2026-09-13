@@ -536,17 +536,23 @@ Generative AI can support learning and professional analysis, but it can also co
 
 ## 12. Learning resources and documentation
 
-The weekly course notebooks provide the main structured learning route. The resources below provide deeper explanations, alternative examples and authoritative documentation.
+The weekly course notebooks provide the main structured route through the course. The resources below offer additional explanations, worked examples and authoritative documentation.
 
-### Core learning resources
+### Recommended course textbook
 
 #### [Introduction to Python for Geographic Data Analysis](https://pythongis.org/)
 
-**Recommended open textbook.** Use selected chapters to reinforce the course rather than attempting to complete the entire book at once. It combines Python fundamentals with geographic data-analysis examples.
+**Tenkanen, Heikinheimo and Whipp (2025)**
+
+This is the recommended free online textbook supporting the weekly laboratory notebooks. Selected sections will be signposted during the course. You are **not expected to read or complete the entire book**.
+
+> **Reference:** Tenkanen, H., Heikinheimo, V. and Whipp, D. (2025) *Introduction to Python for Geographic Data Analysis* [e-book]. Available at: [https://pythongis.org/](https://pythongis.org/) (Accessed: 12 September 2026).
+
+### Additional learning resources
 
 #### [Project Pythia Foundations](https://foundations.projectpythia.org/)
 
-A community learning resource for Python-based computing in the geosciences. It is particularly valuable for the MSc Climate Change and MSc in GIS/Remote Sensing route and includes open tutorials on:
+Project Pythia is a community learning resource for Python-based computing in the geosciences. It provides open tutorials covering:
 
 - NumPy and Pandas;
 - dates and calendars;
@@ -555,22 +561,30 @@ A community learning resource for Python-based computing in the geosciences. It 
 - Cartopy;
 - Git and GitHub.
 
+> **Best suited to:** MSc Climate Change, Earth Science, GIS and Remote Sensing students who want to extend the material introduced in class.
+
 #### [Python for Data Analysis, 3rd edition — Wes McKinney](https://wesmckinney.com/book/)
 
-The principal detailed reference for Pandas and general data-analysis workflows. It covers:
+A detailed open-access resource for Pandas and general data-analysis workflows. It covers:
 
 - **Interacting with the outside world:** reading and writing common data formats;
 - **Preparation:** cleaning, combining, reshaping, selecting and transforming data;
-- **Transformation:** applying calculations and grouped operations;
+- **Transformation:** applying calculations, aggregations and grouped operations;
 - **Modelling and computation:** connecting data with statistical and computational tools;
 - **Presentation:** producing graphical and textual summaries.
 
-### NumPy
+> **Best suited to:** students and researchers who expect to use Pandas extensively. This is a reference and extension resource rather than required course reading.
+
+### Package documentation and quick guides
+
+Official documentation provides the most complete and current information about each package. You are not expected to read it from beginning to end. Use it to look up particular functions, methods and examples.
+
+#### NumPy
 
 - [NumPy documentation](https://numpy.org/doc/stable/)
 - [NumPy quickstart](https://numpy.org/doc/stable/user/quickstart.html)
 
-### Pandas
+#### Pandas
 
 - [Pandas user guide](https://pandas.pydata.org/pandas-docs/stable/user_guide/)
 - [10 minutes to Pandas](https://pandas.pydata.org/pandas-docs/stable/user_guide/10min.html)
@@ -578,14 +592,15 @@ The principal detailed reference for Pandas and general data-analysis workflows.
 - [Pandas for spreadsheet users](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_spreadsheets.html)
 - [Pandas for R users](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html)
 
-### Matplotlib
+#### Matplotlib
 
 - [Matplotlib documentation](https://matplotlib.org/)
 - [Matplotlib cheat sheets and handouts](https://matplotlib.org/cheatsheets/)
 
-### Xarray
+#### Xarray
 
 - [Xarray documentation](https://docs.xarray.dev/en/stable/)
+nth/)
 - [Xarray in 45 minutes](https://tutorial.xarray.dev/overview/xarray-in-45-min.html)
 
 ---
