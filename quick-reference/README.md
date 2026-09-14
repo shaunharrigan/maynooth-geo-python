@@ -128,7 +128,7 @@ drive.mount("/content/drive")  # Authorise Colab to access your Drive
 A file in Drive can then be opened using its full path, for example:
 
 ```python
-file_path = "/content/drive/MyDrive/GY674/data.csv"  # Store the file location
+file_path = "/content/drive/MyDrive/geo_python_labs/data/test_data.csv"  # Store the file location
 df = pd.read_csv(file_path)  # Read the CSV file into a Pandas DataFrame
 ```
 
