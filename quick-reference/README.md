@@ -181,7 +181,7 @@ A variable name should describe the information it stores. Use lower-case words 
 ### Collections
 
 ```python
-stations = ["Maynooth", "Dublin", "Derry"]          # list
+stations = ["Maynooth", "Donegal", "Dublin"]          # list
 coordinates = (53.38, -6.59)                          # tuple
 station_info = {"name": "Maynooth", "elevation": 48}  # dictionary
 ```
