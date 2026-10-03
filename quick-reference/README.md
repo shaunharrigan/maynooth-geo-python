@@ -4,14 +4,16 @@ Practical Python for geographical data analysis using Google Colab, NumPy, Panda
 
 This guide supports **GY674: Earth Science Data Analysis in Python** and **GY675: Visualising Inequality** at Maynooth University. It is also intended as a useful starting point for postgraduate researchers and staff who are new to Python.
 
-> **How to use this guide:** This is a complete reference, available from the beginning of the course. You are not expected to understand every section immediately. Use it to recall methods already introduced, find reliable documentation and identify what you need to learn next. The weekly notebooks provide the structured route through the course.
+> **How to use this guide:** You do not need to memorise Python syntax. Use this guide when you know what you want to do but cannot remember exactly how to write it. The weekly notebooks provide the structured route through the course; this guide is here when you need a reminder.
 
-The short examples illustrate common patterns. Most are not intended to form one continuous analysis: run the relevant package imports first and replace example filenames and variable names with those used in your own dataset.
+The guide contains material from across the whole module, so **you are not expected to understand every section immediately**. Start with the sections introduced in class and return to the others as the course progresses.
+
+---
 
 ## Contents
 
 1. [Google Colab, Python and Jupyter notebooks](#1-google-colab-python-and-jupyter-notebooks)
-2. [Import conventions](#2-import-conventions)
+2. [Importing packages](#2-importing-packages)
 3. [Python fundamentals](#3-python-fundamentals)
 4. [NumPy arrays](#4-numpy-arrays)
 5. [Pandas and tabular data](#5-pandas-and-tabular-data)
@@ -25,13 +27,15 @@ The short examples illustrate common patterns. Most are not intended to form one
 
 ---
 
-## 1. Google Colab, Python and Jupyter notebooks
+# 1. Google Colab, Python and Jupyter notebooks
 
-### What is Python?
+## What is Python?
 
-**Python** is a programming language. NumPy, Pandas, Xarray and Matplotlib are packages that extend Python for numerical computing, data analysis and visualisation.
+**Python** is a programming language.
 
-### What is a Jupyter notebook?
+Packages such as NumPy, Pandas, Xarray and Matplotlib extend Python with tools for numerical computing, data analysis and visualisation.
+
+## What is a Jupyter notebook?
 
 A **Jupyter notebook** is an interactive document that combines:
 
@@ -42,673 +46,1365 @@ A **Jupyter notebook** is an interactive document that combines:
 
 Notebook files use the extension `.ipynb`.
 
-### What is Google Colab?
+## What is Google Colab?
 
-**Google Colab** is Google's online environment for opening and running Jupyter notebooks. It provides Python and many common packages through a web browser, so no local Python installation is required.
+**Google Colab** is Google's online environment for opening and running Jupyter notebooks.
+
+It provides Python and many common packages through a web browser, so no local Python installation is required.
 
 The relationship is:
 
-> **Python** is the language → **Jupyter notebook** is the document format → **Google Colab** is the online service used to open and run the notebook.
+> **Python** is the language → **Jupyter notebook** is the document → **Google Colab** is the online environment we use to work with it.
 
-### Opening Google Colab
+## Code cells and text cells
 
-You can open Colab in several ways:
+A notebook contains different types of cells:
 
-1. Go to [colab.research.google.com](https://colab.research.google.com/).
-2. Sign in with a Google account.
-3. Choose a notebook from Google Drive, upload an `.ipynb` file, or open a notebook from GitHub.
-4. To create a new notebook, select **File → New notebook**.
-
-When opening a shared course notebook, save an editable copy using **File → Save a copy in Drive**. Do not work directly in the course master copy.
-
-### Code cells, text cells and output
-
-- **Code cells** contain Python commands.
-- **Text cells** contain Markdown explanations, headings, links and instructions.
+- **Code cells** contain Python code.
+- **Text cells** contain headings, explanations and instructions written in Markdown.
 - **Output** appears beneath a code cell after it runs.
-- **Shift + Enter** runs a cell and moves to the next cell.
-- **Ctrl + Enter** or **Cmd + Enter** runs a cell without moving.
+
+Useful shortcuts:
+
+- **Shift + Enter** — run a cell and move to the next cell.
+- **Ctrl + Enter** or **Cmd + Enter** — run a cell and stay in the current cell.
 
 Try this in a code cell:
 
 ```python
-print("Hello from Python")  # Display a short message
+print("Hello from Python")
 ```
 
-The text after `#` is a **comment**. Python ignores comments when running the code; they are notes for the person reading it.
+## Comments
 
-### Writing in a text cell
+Anything after `#` is a **comment**.
 
-Text cells use **Markdown**, a simple way to format explanatory text:
+```python
+temperature = 15  # Daily temperature in °C
+```
+
+Python ignores comments when running the code. They are notes for the person reading it.
+
+## Writing in a text cell
+
+Text cells use **Markdown**:
 
 ```markdown
 # Main heading
+
 ## Smaller heading
 
-**bold text** and *italic text*
+### Even smaller heading
+
+**bold text**
+
+*italic text*
 
 - first item
 - second item
-
-[link text](https://example.com)
 ```
 
-Use text cells to explain the purpose of an analysis, describe the data and interpret results. A notebook should not consist of unexplained code alone.
+Use text cells to explain what you are doing rather than creating a notebook containing unexplained code.
 
-### The runtime
+## The runtime
 
-The **runtime** is the temporary remote computer session that executes the Python code. Variables, files uploaded only to the session and packages installed during the session are lost when it restarts or disconnects. A notebook saved in Google Drive remains available, but you may need to rerun its cells when you reconnect.
+The **runtime** is the temporary computer session that executes your Python code.
+
+Variables, temporary files and packages installed during the session may be lost when the runtime restarts or disconnects.
+
+Your saved notebook remains available, but you may need to rerun its cells.
 
 > **Remember:** The notebook is the saved document; the runtime is the temporary computer running it.
 
-### Reliable Colab workflow
+## A reliable Colab workflow
 
 1. Open the course notebook and save your own copy.
 2. Connect to the runtime.
-3. Run the import and data-loading cells first.
-4. Work through the notebook from top to bottom.
-5. Read outputs and error messages rather than repeatedly pressing Run.
-6. Save important data and outputs to persistent storage.
-7. Before submission, restart the runtime and run all cells from top to bottom.
+3. Work through the notebook from top to bottom.
+4. Run cells as you go.
+5. Look at the output after each step.
+6. Read error messages when something does not work.
+7. Before submitting work, restart the runtime and run all cells from top to bottom.
 
-> **Common problem:** If Python says a variable does not exist, check whether the cell that creates it has been run in the current runtime.
+> **Common problem:** If Python says a variable does not exist, check whether you have run the cell that creates it.
 
-### Accessing files in Colab
+## Accessing files in Colab
 
-Small files can be uploaded using the **Files** panel on the left of Colab. These uploads are temporary and disappear when the runtime is reset.
+Small files can be uploaded using the **Files** panel on the left of Colab.
 
-To access files stored in your Google Drive:
+These files are temporary and disappear when the runtime is reset.
+
+To access files stored in Google Drive:
 
 ```python
 from google.colab import drive
 
-drive.mount("/content/drive")  # Authorise Colab to access your Drive
+drive.mount("/content/drive")
 ```
 
-A file in Drive can then be opened using its full path, for example:
+A file in Drive can then be opened using its path, for example:
 
 ```python
-file_path = "/content/drive/MyDrive/geo_python_labs/data/test_data.csv"  # Store the file location
-df = pd.read_csv(file_path)  # Read the CSV file into a Pandas DataFrame
+file_path = "/content/drive/MyDrive/data/test_data.csv"
+
+df = pd.read_csv(file_path)
 ```
 
 Only mount Drive in notebooks you trust, because code in the notebook can access files available through the mounted Drive.
 
 ---
 
-## 2. Import conventions
+# 2. Importing packages
 
-The Python community uses standard abbreviations for widely used packages:
+Python can be extended using **packages**.
+
+We import a package when we want to use the tools it provides.
+
+Common packages used in this module are:
 
 ```python
-import numpy as np               # Numerical arrays and calculations
-import pandas as pd              # Tabular data analysis
-import xarray as xr              # Labelled multidimensional data
-import matplotlib.pyplot as plt  # Data visualisation
+import numpy as np
+import pandas as pd
+import xarray as xr
+import matplotlib.pyplot as plt
 ```
 
-The statement `import numpy as np` means that NumPy is available using the shorter name `np`. Therefore, `np.arange()` refers to the `arange` function in NumPy.
+These shortened names are standard conventions:
 
-Avoid importing every name from a large package:
+| Package | Short name | Used for |
+|---|---|---|
+| NumPy | `np` | Numerical arrays and calculations |
+| Pandas | `pd` | Tabular data |
+| Xarray | `xr` | Multidimensional Earth science data |
+| Matplotlib | `plt` | Data visualisation |
+
+For example:
+
+```python
+import numpy as np
+```
+
+means:
+
+- `import` — load a package;
+- `numpy` — the package name;
+- `as np` — use the shorter name `np` in our code.
+
+We can then use NumPy tools such as:
+
+```python
+np.array([10, 12, 14])
+```
+
+> **Tip:** Package imports are normally kept together near the beginning of a notebook.
+
+Avoid importing everything from a package:
 
 ```python
 # Avoid this
 from numpy import *
 ```
 
-Explicit package names make code easier to read and reduce conflicts between functions with similar names.
+Explicit package names make code easier to understand.
 
 ---
 
-## 3. Python fundamentals
+# 3. Python fundamentals
 
-### Variables and basic types
+## Variables
 
-```python
-station = "Maynooth"     # str: text
-temperature = 18.4       # float: decimal number
-year = 2026               # int: whole number
-is_wet = True             # bool: True or False
-
-type(temperature)   # Show the type of object stored in the variable
-print(temperature)  # Display the value stored in the variable
-```
-
-Python is case-sensitive: `temperature` and `Temperature` are different names.
-
-A variable name should describe the information it stores. Use lower-case words separated by underscores, such as `annual_temperature`. A variable name cannot contain spaces or begin with a number.
-
-### Collections
+A **variable** gives a piece of information a name so that we can store it and use it again.
 
 ```python
-stations = ["Maynooth", "Donegal", "Dublin"]          # list
-coordinates = (53.38, -6.59)                          # tuple
-station_info = {"name": "Maynooth", "elevation": 48}  # dictionary
+temperature = 15
 ```
 
-- A **list** is an ordered collection that can be changed after it is created.
-- A **tuple** is an ordered collection usually used for values that belong together, such as coordinates.
-- A **dictionary** stores values using named keys; for example, `station_info["name"]` returns `"Maynooth"`.
+Here:
 
-Python starts counting at zero:
+- `temperature` is the variable name;
+- `=` assigns a value;
+- `15` is the value stored in the variable.
+
+Variables can store different kinds of information:
 
 ```python
-stations[0]       # first item
-stations[-1]      # final item
-stations[0:2]     # first two items; final position is excluded
+station = "Maynooth"
+temperature = 15
+rainfall = 12.5
+is_raining = True
 ```
 
-### Operators and comparisons
+Use meaningful variable names:
 
 ```python
-temperature_k = 291.55  # Assign a temperature in kelvin
-temperature_c = temperature_k - 273.15  # Convert kelvin to degrees Celsius
-is_warm = temperature_c > 20  # True if temperature_c is above 20
-is_valid = (temperature_c > -50) and (temperature_c < 60)  # Plausibility check
+annual_temperature = 11.2
 ```
 
-- `=` assigns a value.
-- `==` tests whether values are equal.
-- `!=` means not equal.
-- `>`, `<`, `>=` and `<=` compare values.
-- `and`, `or` and `not` combine ordinary Python conditions. Pandas filters use `&`, `|` and `~` instead, as shown later.
+Python is case-sensitive:
 
-### Conditions and loops
+```python
+temperature
+Temperature
+```
+
+These are treated as different names.
+
+## Basic data types
+
+Some common Python data types are:
+
+| Type | Meaning | Example |
+|---|---|---|
+| `int` | Whole number | `15` |
+| `float` | Decimal number | `12.5` |
+| `str` | Text | `"Maynooth"` |
+| `bool` | True or False | `True` |
+
+Use `type()` to check what kind of information a variable contains:
+
+```python
+temperature = 15
+
+type(temperature)
+```
+
+returns:
+
+```text
+int
+```
+
+Python treats numbers and text differently:
+
+```python
+rainfall = 12.5
+```
+
+is a number, while:
+
+```python
+rainfall = "12.5"
+```
+
+is text.
+
+## Displaying results
+
+Entering a variable at the end of a code cell displays its value:
+
+```python
+temperature
+```
+
+You can also use `print()`:
+
+```python
+print(temperature)
+```
+
+`print()` is particularly useful when you want to display several results:
+
+```python
+print("Temperature:", temperature)
+print("Rainfall:", rainfall)
+```
+
+## Basic calculations
+
+Python can be used like a calculator:
+
+```python
+10 + 5
+10 - 5
+10 * 5
+10 / 5
+```
+
+Variables can be used in calculations:
+
+```python
+rainfall_day_1 = 12.5
+rainfall_day_2 = 8.2
+
+total_rainfall = rainfall_day_1 + rainfall_day_2
+```
+
+## Lists
+
+A **list** stores multiple values together in one variable.
+
+```python
+rainfall = [12.5, 8.2, 10.9, 5.2, 30.1]
+```
+
+Lists use **square brackets `[]`**, with values separated by commas.
+
+Lists can also contain text:
+
+```python
+stations = ["Maynooth", "Donegal", "Dublin"]
+```
+
+Use `len()` to find the number of values:
+
+```python
+len(rainfall)
+```
+
+## Indexing
+
+**Indexing** allows us to access an individual value.
+
+Python starts counting at **0**, not 1.
+
+```python
+rainfall = [12.5, 8.2, 10.9, 5.2, 30.1]
+
+rainfall[0]   # first value
+rainfall[1]   # second value
+rainfall[2]   # third value
+```
+
+The final value can be selected using:
+
+```python
+rainfall[-1]
+```
+
+Values in a list can also be changed:
+
+```python
+rainfall[0] = 15.0
+```
+
+## Slicing
+
+**Slicing** allows us to select multiple values.
+
+The basic pattern is:
+
+```python
+data[start:stop]
+```
+
+For example:
+
+```python
+rainfall[1:4]
+```
+
+selects the values at positions `1`, `2` and `3`.
+
+> **Important:** The `stop` position is **not included**.
+
+Think of `start` and `stop` as boundaries around the values you want to select.
+
+Useful patterns include:
+
+```python
+rainfall[0:3]   # first three values
+rainfall[:3]    # first three values
+rainfall[2:]    # third value onwards
+rainfall[-3:]   # final three values
+```
+
+A useful rule is:
+
+> **stop - start = number of values selected**
+
+For example:
+
+```python
+rainfall[1:4]
+```
+
+selects:
+
+```text
+4 - 1 = 3 values
+```
+
+## Other Python collections
+
+You will encounter other ways of storing information later:
+
+```python
+coordinates = (53.38, -6.59)
+
+station_info = {
+    "name": "Maynooth",
+    "elevation": 48
+}
+```
+
+- A **tuple** is an ordered collection often used for values that belong together.
+- A **dictionary** stores information using named keys.
+
+For example:
+
+```python
+station_info["name"]
+```
+
+returns:
+
+```text
+Maynooth
+```
+
+## Operators and comparisons
+
+Python can compare values:
+
+```python
+temperature > 20
+temperature < 20
+temperature == 20
+temperature != 20
+temperature >= 20
+temperature <= 20
+```
+
+Common operators are:
+
+| Operator | Meaning |
+|---|---|
+| `=` | Assign a value |
+| `==` | Equal to |
+| `!=` | Not equal to |
+| `>` | Greater than |
+| `<` | Less than |
+| `>=` | Greater than or equal to |
+| `<=` | Less than or equal to |
+
+Conditions can be combined:
+
+```python
+is_valid = (temperature > -50) and (temperature < 60)
+```
+
+Pandas filters use `&`, `|` and `~` instead, as shown later.
+
+## Conditions and loops
+
+An `if` statement runs code when a condition is true:
 
 ```python
 if temperature > 20:
-    print("Warm")      # Run this line when the condition is True
+    print("Warm")
 else:
-    print("Not warm")  # Run this line when the condition is False
+    print("Not warm")
 ```
+
+A `for` loop repeats an operation:
 
 ```python
 for station in stations:
-    print(station)  # Repeat once for each item in the list
+    print(station)
 ```
 
-Indentation is part of Python syntax.
+> **Important:** Indentation is part of Python syntax.
 
-### Functions, methods and attributes
+## Functions, methods and attributes
+
+You will encounter several slightly different ways of asking Python to do something:
 
 ```python
 print(temperature)          # function
-df.head()                   # method
+
+temperature.mean()          # method
+
 df.shape                    # attribute
-pd.read_csv("data.csv")     # function from Pandas
+
+pd.read_csv("data.csv")     # function from a package
 ```
 
-Parentheses call a function or method. Attributes such as `.shape` describe an object and do not use parentheses.
+You do not need to memorise these terms immediately.
 
-### Define a simple function
+A useful pattern to recognise is:
 
-A function packages a reusable operation. Inputs are placed inside the parentheses, and `return` sends the result back:
+```python
+object.method()
+```
+
+For example:
+
+```python
+temperature.mean()
+```
+
+means: calculate the mean of the object called `temperature`.
+
+## Defining a simple function
+
+A function packages an operation so that it can be reused:
 
 ```python
 def kelvin_to_celsius(temperature_k):
-    """Convert temperature from kelvin to degrees Celsius."""
     temperature_c = temperature_k - 273.15
     return temperature_c
+```
 
+Use it with:
 
-kelvin_to_celsius(291.55)  # Returns 18.4
+```python
+kelvin_to_celsius(291.55)
+```
+
+which returns:
+
+```text
+18.4
 ```
 
 ---
 
-## 4. NumPy arrays
+# 4. NumPy arrays
 
-NumPy (**Numerical Python**) provides arrays and numerical operations. An array stores data in one or more dimensions. A one-dimensional array resembles a list; a two-dimensional array resembles a table or grid.
+NumPy stands for **Numerical Python**.
 
-### Create and inspect an array
+It provides tools for working efficiently with numerical data.
 
-```python
-values = np.array([12.1, 14.5, 13.8])
+Its main data structure is the **array**.
 
-values.shape  # Length of each dimension
-values.dtype  # Data type stored in the array
-values.ndim   # Number of dimensions
-values.size   # Total number of values
-```
+## Why use a NumPy array?
 
-### Select values
+A Python list can store several values:
 
 ```python
-values[0]             # first value
-values[-1]            # final value
-values[0:2]           # first two values
-values[values > 13]   # values satisfying a condition
+temperature = [10, 12, 14, 16, 18]
 ```
 
-### Calculate summaries
+But numerical calculations with lists do not always behave as you might expect.
+
+For example:
 
 ```python
-values.mean()       # Arithmetic mean
-values.min()        # Smallest value
-values.max()        # Largest value
-values.sum()        # Sum of all values
-np.median(values)   # Median: middle value when ordered
-np.std(values)      # Standard deviation: spread around the mean
+temperature * 2
 ```
 
-> **Common mistake:** Python lists and NumPy arrays can look similar but behave differently during calculations. Use `type()` when uncertain.
+repeats the list:
+
+```text
+[10, 12, 14, 16, 18, 10, 12, 14, 16, 18]
+```
+
+A NumPy array behaves differently:
+
+```python
+import numpy as np
+
+temperature = np.array([10, 12, 14, 16, 18])
+
+temperature * 2
+```
+
+returns:
+
+```text
+[20 24 28 32 36]
+```
+
+The calculation is applied to **every value in the array**.
+
+This makes NumPy arrays very useful for numerical data analysis.
+
+## Create an array
+
+Convert a list into a NumPy array:
+
+```python
+temperature = [10, 12, 14, 16, 18]
+
+temperature = np.array(temperature)
+```
+
+Or create the array directly:
+
+```python
+temperature = np.array([10, 12, 14, 16, 18])
+```
+
+## Calculate with an array
+
+Operations are applied across the values:
+
+```python
+temperature + 2
+temperature - 5
+temperature * 2
+temperature / 2
+```
+
+## Select values
+
+NumPy arrays use the same basic indexing and slicing that you have already learned:
+
+```python
+temperature[0]      # first value
+
+temperature[-1]     # final value
+
+temperature[0:3]    # first three values
+
+temperature[:3]     # first three values
+
+temperature[2:]     # third value onwards
+```
+
+## Calculate summary statistics
+
+Useful methods include:
+
+```python
+temperature.mean()   # mean
+
+temperature.min()    # minimum
+
+temperature.max()    # maximum
+
+temperature.sum()    # total
+```
+
+You can combine slicing and calculations:
+
+```python
+temperature[:3].mean()
+```
+
+This first selects the first three values and then calculates their mean.
+
+## Inspect an array
+
+As you progress through the module, these can help you understand an array:
+
+```python
+temperature.shape   # size of each dimension
+
+temperature.dtype   # data type stored in the array
+
+temperature.ndim    # number of dimensions
+
+temperature.size    # total number of values
+```
+
+> **Common mistake:** Python lists and NumPy arrays can look very similar but behave differently during calculations. Use `type()` if you are unsure what you are working with.
 
 ---
 
-## 5. Pandas and tabular data
+# 5. Pandas and tabular data
 
-Pandas is used for labelled tabular data. A **DataFrame** contains rows and columns; a single column is usually a **Series**.
+Pandas is used for **tabular data** organised into rows and columns.
 
-### Read and inspect a CSV file
+A **DataFrame** contains rows and columns. A single column is usually a **Series**.
+
+## Read a CSV file
 
 ```python
-df = pd.read_csv("data.csv")  # Read a comma-separated file into a DataFrame
+import pandas as pd
 
-df.head()      # Display the first 5 rows
-df.tail()      # Display the final 5 rows
-df.info()      # Summarise columns, data types and non-missing values
-df.describe()  # Calculate summary statistics for numerical columns
-df.shape       # Return (number of rows, number of columns)
-df.columns     # List the column names
-df.dtypes      # Show the data type of each column
+df = pd.read_csv("data.csv")
 ```
 
-`"data.csv"` is an example file path. Replace it with the name or path of your own file. In Colab, a file uploaded only through the Files panel is temporary and must be uploaded again after the runtime restarts.
+Replace `"data.csv"` with the name or path of your own file.
 
-### Select columns and rows
+## Inspect a dataset
+
+Before analysing a new dataset, look at what it contains:
 
 ```python
-df["temperature"]             # Select one column as a Series
-df[["date", "temperature"]]   # Select two columns as a DataFrame
+df.head()      # first 5 rows
 
-df.loc[0:4, ["date", "temperature"]]  # Labels 0 to 4; end label included
-df.iloc[0:5, 0:2]                      # First 5 rows and first 2 columns
+df.tail()      # final 5 rows
+
+df.info()      # columns, data types and missing values
+
+df.describe()  # summary statistics
+
+df.shape       # number of rows and columns
+
+df.columns     # column names
+
+df.dtypes      # data type of each column
 ```
 
-Selecting one column normally returns a Series. Selecting a list of columns returns a DataFrame. `.loc` selects by labels; `.iloc` selects by numerical position and excludes the final position in a slice.
+## Select columns
 
-### Filter observations
+Select one column:
 
 ```python
-warm = df[df["temperature"] > 20]  # Keep rows above 20°C
+df["temperature"]
+```
 
+Select several columns:
+
+```python
+df[["date", "temperature"]]
+```
+
+## Select rows and columns
+
+Use `.loc` to select using labels:
+
+```python
+df.loc[0:4, ["date", "temperature"]]
+```
+
+Use `.iloc` to select using numerical positions:
+
+```python
+df.iloc[0:5, 0:2]
+```
+
+`.iloc` uses the same stop-before-the-final-position slicing pattern introduced earlier.
+
+## Filter observations
+
+For example, keep observations where temperature is greater than 20°C:
+
+```python
+warm = df[df["temperature"] > 20]
+```
+
+Combine conditions using `&`:
+
+```python
 wet_and_warm = df[
-    (df["precipitation"] > 0) &   # Precipitation is above zero AND
-    (df["temperature"] > 20)      # temperature is above 20°C
+    (df["precipitation"] > 0) &
+    (df["temperature"] > 20)
 ]
 ```
 
-Use `&` for and, `|` for or, and `~` for not. Put each comparison inside parentheses when combining conditions.
+For Pandas filters:
 
-### Missing values
+- `&` means **and**
+- `|` means **or**
+- `~` means **not**
+
+Put individual comparisons inside parentheses.
+
+## Missing values
+
+Count missing values:
 
 ```python
-df.isna().sum()  # Count missing values in each column
+df.isna().sum()
+```
 
-# Option 1: create a copy containing only complete rows
+Remove rows containing missing values:
+
+```python
 df_complete = df.dropna()
+```
 
-# Option 2: replace missing temperatures with the column mean
+Replace missing temperatures with the mean:
+
+```python
 df["temperature"] = df["temperature"].fillna(
     df["temperature"].mean()
 )
 ```
 
-These are alternative examples, not an instruction to apply both. The appropriate treatment depends on what the missing values represent.
+These are different approaches. The correct treatment depends on what the missing values represent.
 
-> **Scientific check:** Never remove or replace missing observations without explaining and justifying the decision.
+> **Scientific check:** Never remove or replace missing observations without understanding and explaining the decision.
 
-### Group and summarise
+## Group and summarise
+
+Calculate a mean for different groups:
 
 ```python
-df.groupby("region")["income"].mean()  # Mean income for each region
+df.groupby("region")["income"].mean()
+```
 
+More detailed summaries can be created using:
+
+```python
 summary = (
-    df.groupby("region")  # Form one group for each region
+    df.groupby("region")
       .agg(
-          mean_income=("income", "mean"),      # Mean income in each group
-          population=("population", "sum")     # Total population in each group
+          mean_income=("income", "mean"),
+          population=("population", "sum")
       )
-      .reset_index()  # Return region from the index to an ordinary column
+      .reset_index()
 )
 ```
 
-### Save a table
+## Save a table
 
 ```python
-df.to_csv("analysis_results.csv", index=False)  # Save without an extra index column
+df.to_csv("analysis_results.csv", index=False)
 ```
 
 ---
 
-## 6. Dates and time series
+# 6. Dates and time series
 
-Dates should be stored as dates rather than ordinary text.
+Dates should normally be stored as dates rather than ordinary text.
 
-### Convert and index dates
-
-```python
-df["date"] = pd.to_datetime(df["date"])  # Convert text into datetime values
-df = df.set_index("date")  # Use dates as the row labels
-
-df.loc["2020"]                  # All observations in 2020
-df.loc["2020-01":"2020-12"]    # January to December 2020
-```
-
-### Aggregate and smooth
+## Convert dates
 
 ```python
-monthly_temperature = df["temperature"].resample("MS").mean()  # Monthly means
-annual_precipitation = df["precipitation"].resample("YS").sum()  # Annual totals
-rolling_temperature = df["temperature"].rolling(30).mean()  # 30-row moving mean
+df["date"] = pd.to_datetime(df["date"])
 ```
 
-> **Scientific check:** Match the aggregation to the variable. Temperature is often averaged, while precipitation amounts may be summed. Always confirm the original variable definition and units.
+Use dates as the DataFrame index:
+
+```python
+df = df.set_index("date")
+```
+
+## Select dates
+
+```python
+df.loc["2020"]
+```
+
+selects observations in 2020.
+
+```python
+df.loc["2020-01":"2020-12"]
+```
+
+selects January to December 2020.
+
+## Aggregate time series
+
+Calculate monthly mean temperature:
+
+```python
+monthly_temperature = df["temperature"].resample("MS").mean()
+```
+
+Calculate annual precipitation totals:
+
+```python
+annual_precipitation = df["precipitation"].resample("YS").sum()
+```
+
+Calculate a 30-row moving mean:
+
+```python
+rolling_temperature = df["temperature"].rolling(30).mean()
+```
+
+> **Scientific check:** Match the calculation to the variable. Temperature is often averaged, while precipitation amounts may be summed. Always check what the original variable represents.
 
 ---
 
-## 7. Xarray and multidimensional data
+# 7. Xarray and multidimensional data
 
-Xarray extends labelled data analysis to multidimensional datasets. It is particularly useful for climate, hydrological and other gridded Earth-system data.
+Xarray is particularly useful for climate, hydrological and other gridded Earth-system data.
 
-### Open and inspect a dataset
+## Open a dataset
 
 ```python
-ds = xr.open_dataset("climate_data.nc")  # Open a NetCDF file as an Xarray Dataset
+import xarray as xr
 
-ds           # Display an interactive overview of the complete Dataset
-ds.data_vars  # Data variables
-ds.coords     # Coordinate labels
-ds.dims       # Dimension names and lengths
-ds.attrs      # Dataset metadata
+ds = xr.open_dataset("climate_data.nc")
 ```
 
-A **Dataset** contains related variables. A **DataArray** represents one labelled variable. Dimensions define axes such as time, latitude and longitude; coordinates label positions along those axes.
-
-Names vary between datasets: for example, coordinates may be called `latitude` and `longitude`, or `lat` and `lon`. Always inspect the dataset before copying a selection example.
-
-### Select a variable, time and location
+## Inspect a dataset
 
 ```python
-temperature = ds["temperature"]  # Select one variable as a DataArray
+ds
+```
 
-period = temperature.sel(time=slice("2001", "2020"))  # Select a time period
+displays an overview of the complete dataset.
 
+Useful attributes include:
+
+```python
+ds.data_vars   # data variables
+
+ds.coords      # coordinates
+
+ds.dims        # dimensions
+
+ds.attrs       # metadata
+```
+
+A **Dataset** can contain several related variables.
+
+A **DataArray** represents one labelled variable.
+
+Dimensions might include:
+
+- time;
+- latitude;
+- longitude.
+
+## Select a variable
+
+```python
+temperature = ds["temperature"]
+```
+
+## Select a time period
+
+```python
+period = temperature.sel(
+    time=slice("2001", "2020")
+)
+```
+
+## Select a location
+
+```python
 maynooth = temperature.sel(
-    latitude=53.38,     # Target latitude
-    longitude=-6.59,   # Target longitude
-    method="nearest"   # Use the nearest available grid cell
+    latitude=53.38,
+    longitude=-6.59,
+    method="nearest"
 )
 ```
 
-### Select an area
+## Select an area
 
 ```python
 ireland = temperature.sel(
-    latitude=slice(55.5, 51.0),    # Northern to southern boundary
-    longitude=slice(-11.0, -5.0)   # Western to eastern boundary
+    latitude=slice(55.5, 51.0),
+    longitude=slice(-11.0, -5.0)
 )
 ```
 
-Latitude may run north-to-south or south-to-north. Inspect the coordinate before defining a slice.
+Latitude can run north-to-south or south-to-north. Always inspect the coordinate before defining a slice.
 
-### Calculate and resample
-
-```python
-temperature.mean()                 # Mean across every dimension
-temperature.mean(dim="time")      # Mean through time at each location
-temperature.max(dim="time")       # Maximum through time at each location
-
-monthly = temperature.resample(time="MS").mean()  # Monthly mean values
-anomaly = temperature - temperature.mean(dim="time")  # Difference from time mean
-```
-
-### Inspect before trusting a calculation
+## Calculate across dimensions
 
 ```python
-temperature.dims    # Dimension names, for example (time, latitude, longitude)
-temperature.shape   # Number of values along each dimension
-temperature.coords  # Coordinate labels and values
-temperature.attrs   # Metadata such as units and a descriptive name
+temperature.mean()
 ```
 
-### Common climate unit conversions
+calculates a mean across every dimension.
+
+To calculate the mean through time:
 
 ```python
-# Select variables whose original units are kelvin and metres
-temperature_k = ds["temperature"]
-precipitation_m = ds["precipitation"]
-
-temperature_c = temperature_k - 273.15  # Convert kelvin to degrees Celsius
-precipitation_mm = precipitation_m * 1000  # Convert metres to millimetres
+temperature.mean(dim="time")
 ```
 
-Here, names ending in `_k`, `_c`, `_m` and `_mm` make the assumed units explicit. Check the variable's metadata before converting it.
+Maximum through time:
 
-> **Scientific check:** Determine whether precipitation represents a rate, an interval total or an accumulated total before converting or aggregating it.
+```python
+temperature.max(dim="time")
+```
+
+## Resample and calculate anomalies
+
+```python
+monthly = temperature.resample(time="MS").mean()
+```
+
+```python
+anomaly = temperature - temperature.mean(dim="time")
+```
+
+## Inspect before calculating
+
+Useful checks include:
+
+```python
+temperature.dims
+
+temperature.shape
+
+temperature.coords
+
+temperature.attrs
+```
+
+These help you understand what the data represent before performing calculations.
+
+## Common climate unit conversions
+
+Kelvin to degrees Celsius:
+
+```python
+temperature_c = temperature_k - 273.15
+```
+
+Metres to millimetres:
+
+```python
+precipitation_mm = precipitation_m * 1000
+```
+
+> **Scientific check:** Always check the variable metadata and units before converting or aggregating data.
 
 ---
 
-## 8. Data visualisation
+# 8. Data visualisation
 
-A figure should communicate evidence clearly. The chart choice and accurate representation of the data matter more than decoration.
+A good figure should communicate the data clearly.
 
-### Create a time-series figure
+The chart type and accurate representation of the data matter more than decoration.
+
+## A basic line graph
+
+A common Matplotlib pattern is:
 
 ```python
-fig, ax = plt.subplots(figsize=(9, 5))  # Create a figure and one plotting area
+import matplotlib.pyplot as plt
+
+day = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+temperature = [10, 12, 14, 13, 16]
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.plot(day, temperature, marker="o")
+
+ax.set(
+    title="Daily temperature",
+    xlabel="Day",
+    ylabel="Temperature (°C)"
+)
+
+plt.show()
+```
+
+You do not need to memorise all of this immediately.
+
+A useful way to think about it is:
+
+```python
+fig, ax = plt.subplots()
+```
+
+creates the figure and a plotting area.
+
+Then:
+
+```python
+ax.plot(...)
+```
+
+draws data on that plotting area.
+
+Finally:
+
+```python
+plt.show()
+```
+
+displays the completed figure.
+
+## Plot a time series from a DataFrame
+
+Later in the module, you might plot data directly from Pandas:
+
+```python
+fig, ax = plt.subplots(figsize=(9, 5))
 
 ax.plot(
-    df.index,            # Values for the horizontal axis
-    df["temperature"],  # Values for the vertical axis
-    color="firebrick",  # Line colour
-    linewidth=1.5        # Line thickness
+    df.index,
+    df["temperature"],
+    linewidth=1.5
 )
 
 ax.set(
-    title="Annual temperature at Maynooth",  # Figure title
-    xlabel="Year",                            # Horizontal-axis label
-    ylabel="Temperature (°C)"                 # Vertical-axis label and units
+    title="Annual temperature at Maynooth",
+    xlabel="Year",
+    ylabel="Temperature (°C)"
 )
 
-ax.grid(alpha=0.25)  # Add a light grid
-plt.tight_layout()   # Adjust spacing so labels are not cut off
-plt.show()           # Display the completed figure
+ax.grid(alpha=0.25)
+
+plt.tight_layout()
+plt.show()
 ```
 
-### Plot spatial Xarray data
+## Experiment with a figure
+
+One of the best ways to learn Matplotlib is to change something and rerun the cell.
+
+For example:
 
 ```python
-fig, ax = plt.subplots(figsize=(8, 6))  # Create a figure and plotting area
-
-temperature.mean(dim="time").plot(
-    ax=ax,                                      # Draw on this plotting area
-    cmap="RdBu_r",                             # Select a colour map
-    cbar_kwargs={"label": "Temperature (°C)"}  # Label the colour bar
-)
-
-ax.set_title("Mean annual temperature, 2001–2020")  # Add a title
-plt.show()  # Display the completed map
+fig, ax = plt.subplots(figsize=(10, 4))
 ```
 
-### Save a figure
+changes the figure size.
+
+You can experiment with the marker:
+
+```python
+ax.plot(day, temperature, marker="s")
+```
+
+or line style:
+
+```python
+ax.plot(day, temperature, marker="o", linestyle="--")
+```
+
+> **Tip:** Change one thing at a time, rerun the cell and look at what happens.
+
+## Plot spatial Xarray data
+
+```python
+fig, ax = plt.subplots(figsize=(8, 6))
+
+temperature.mean(dim="time").plot(
+    ax=ax,
+    cmap="RdBu_r",
+    cbar_kwargs={"label": "Temperature (°C)"}
+)
+
+ax.set_title("Mean annual temperature, 2001–2020")
+
+plt.show()
+```
+
+## Save a figure
 
 ```python
 fig.savefig(
-    "figure.png",       # Output filename
-    dpi=300,             # Image resolution in dots per inch
-    bbox_inches="tight"  # Remove unnecessary surrounding whitespace
+    "figure.png",
+    dpi=300,
+    bbox_inches="tight"
 )
 ```
 
-Save the figure after creating it and before closing or clearing it. `dpi=300` produces a high-resolution raster image, while `bbox_inches="tight"` reduces unnecessary surrounding whitespace.
+Here:
 
-### Figure checklist
+- `"figure.png"` is the output filename;
+- `dpi=300` produces a high-resolution raster image;
+- `bbox_inches="tight"` removes unnecessary surrounding whitespace.
 
-- Does the title communicate the main finding?
-- Are the variable, units, location and period clear?
-- Do the chart type and colour scale suit the data?
-- Are missing data and uncertainty acknowledged?
+## Figure checklist
+
+Before considering a figure finished, ask:
+
+- Is the variable clear?
+- Are the units clear?
+- Is the location and time period clear where relevant?
+- Is the chart type appropriate for the data?
+- Is the title informative?
+- Are the axis labels readable?
 - Can the figure be understood without reading the code?
-- Does the caption identify the data source?
-- Are colours and labels accessible and readable when printed or viewed by someone with colour-vision deficiency?
+- Is the data source identified where appropriate?
+- Are colours and labels accessible and readable?
 
 ---
 
-## 9. Errors and debugging
+# 9. Errors and debugging
 
-Errors are a normal part of programming. Read the traceback from the final line upward and identify the first part of your own code that failed.
+Errors are a normal part of programming.
+
+An error does not mean that you have failed. It means Python has encountered something it cannot execute.
+
+Read the error message rather than immediately rerunning the same code.
+
+## Common errors
 
 | Error | Likely meaning |
 |---|---|
-| `NameError` | A variable or package has not been defined. Check spelling and whether earlier cells ran. |
-| `KeyError` | A requested column or label does not exist. Inspect the available labels. |
-| `FileNotFoundError` | Python cannot find the file. Check its name, path and location. |
-| `TypeError` | An operation was applied to an unsuitable object type. Inspect it using `type()`. |
-| `ValueError` | The type may be acceptable, but the value, format or shape is unsuitable. |
-| `SyntaxError` | Check brackets, quotation marks, colons and indentation. |
+| `NameError` | A variable or package has not been defined |
+| `IndexError` | You requested a position that does not exist |
+| `KeyError` | A requested column or label does not exist |
+| `FileNotFoundError` | Python cannot find the file |
+| `TypeError` | An operation was applied to an unsuitable type of object |
+| `ValueError` | The type may be acceptable, but the value or format is unsuitable |
+| `SyntaxError` | Python cannot understand how the code has been written |
 
-### Practical debugging sequence
+## A simple debugging sequence
 
-1. Read the final line of the error.
-2. Identify the cell and line that failed.
-3. Inspect the object using `type()`, `.shape`, `.head()`, `.dims` or `.coords`.
-4. Check spelling, brackets, quotation marks and labels.
-5. Change one thing and rerun the cell.
-6. Ask for a limited hint only after attempting the diagnosis.
+When something does not work:
+
+**1. Read the error.**
+
+Look particularly at the final line.
+
+**2. Find the line of your code that caused the problem.**
+
+**3. Check simple things first.**
+
+- Is the variable name spelled correctly?
+- Did you run the earlier cell?
+- Are quotation marks or brackets missing?
+- Are you using the correct index?
+- Did you import the package?
+
+**4. Inspect what you are working with.**
+
+For example:
+
+```python
+type(data)
+```
+
+or later in the course:
+
+```python
+df.head()
+df.shape
+temperature.dims
+```
+
+**5. Change one thing and run the code again.**
+
+> **Good programming practice:** Do not be afraid to experiment. Change something, run the cell, inspect the result and learn from what happens.
 
 ---
 
-## 10. Reproducible notebooks and GitHub
+# 10. Reproducible notebooks and GitHub
 
-A reproducible notebook should allow another person—or your future self—to understand the decisions and recreate the analysis.
+A reproducible notebook should allow another person — or your future self — to understand what you did and recreate the analysis.
 
-A **repository** is a project folder tracked by GitHub. A **commit** is a saved checkpoint with a short message explaining what changed. GitHub stores the notebook and its history; Colab provides the environment in which the notebook runs.
+A **repository** is a project folder tracked by GitHub.
 
-### Notebook checklist
+A **commit** is a saved checkpoint with a short message explaining what changed.
 
-- State a clear title and research question.
-- Explain the data source, variables and units.
-- Keep package imports together near the beginning.
-- Use meaningful variable names.
-- Separate stages with informative Markdown headings.
-- Include data-quality and plausibility checks.
-- Explain important analytical decisions.
-- Restart the runtime and run every cell from top to bottom.
-- Remove unused code and failed experimental cells from the final version.
-- Save the final notebook and commit it to the appropriate GitHub repository.
-- Do not commit passwords, API keys, personal data or restricted datasets.
+GitHub stores the notebook and its history; Colab provides the environment in which the notebook runs.
+
+## Notebook checklist
+
+A good notebook should:
+
+- have a clear title;
+- explain the purpose of the analysis;
+- identify the data source, variables and units;
+- keep package imports together near the beginning;
+- use meaningful variable names;
+- separate stages using Markdown headings;
+- include relevant data-quality checks;
+- explain important analytical decisions;
+- run successfully from top to bottom;
+- remove unused or failed experimental code before submission.
+
+Before finishing:
+
+> **Restart the runtime and run every cell from top to bottom.**
+
+Do not commit passwords, API keys, personal data or restricted datasets to GitHub.
 
 > **Remember:** Reproducibility is not simply code that runs. The data, assumptions, transformations and interpretation must also be clear.
 
 ---
 
-## 11. Using generative AI responsibly
+# 11. Using generative AI responsibly
 
-Generative AI can support learning and professional analysis, but it can also conceal gaps in understanding. You remain responsible for every line of code and every result in your notebook.
+Generative AI can support learning and professional data analysis, but it can also hide gaps in understanding.
 
-Any module-specific assessment rules take precedence over this general guidance.
+You remain responsible for every line of code and every result in your notebook.
 
-### Appropriate uses
+> **Important:** Module-specific assessment rules always take precedence over this general guidance.
 
-- Explain an error message in plain language.
-- Provide a hint without completing the full task.
-- Explain what an existing line or method does.
-- Compare two possible approaches.
-- Suggest checks for validating a result.
-- Review code that you have already attempted.
+## Appropriate learning uses
 
-### Uses that do not demonstrate learning
+Generative AI can help you:
 
-- Pasting an assessment task into an AI tool.
-- Accepting a complete generated workflow.
-- Repeatedly generating code until something runs.
-- Using functions or methods that you cannot explain.
-- Assuming that code is scientifically correct because it executes successfully.
+- explain an error message in plain language;
+- request a hint after you have attempted a problem;
+- explain what an existing line of code does;
+- compare two possible approaches;
+- suggest ways to check a result;
+- review code that you have already attempted.
 
-### Recommended learning sequence
+## Uses that do not demonstrate learning
 
-> Attempt the task → inspect the error or output → reason about the problem → request a limited hint if needed → modify the code yourself → verify the result.
+Be cautious about:
+
+- pasting an assessment task into an AI tool;
+- accepting a complete generated workflow;
+- repeatedly generating code until something runs;
+- using functions or methods that you cannot explain;
+- assuming code is scientifically correct simply because it executes.
+
+## Recommended learning sequence
+
+> **Attempt → Run → Inspect → Think → Get a hint if needed → Modify → Run again → Verify**
+
+The aim is not simply to produce working code. The aim is to understand what the code is doing and whether the result makes sense.
 
 ---
 
-## 12. Learning resources and documentation
+# 12. Learning resources and documentation
 
-The weekly course notebooks provide the main structured route through the course. The resources below offer additional explanations, worked examples and authoritative documentation.
+The weekly course notebooks provide the main structured route through the course.
 
-### Recommended course textbook
+The resources below provide additional explanations, examples and documentation when you need them.
 
-#### [Introduction to Python for Geographic Data Analysis](https://pythongis.org/)
+## Recommended course textbook
+
+### [Introduction to Python for Geographic Data Analysis](https://pythongis.org/)
 
 **Tenkanen, Heikinheimo and Whipp (2025)**
 
-This is the recommended free online textbook supporting the weekly laboratory notebooks. Selected sections will be signposted during the course. You are **not expected to read or complete the entire book**.
+This is the recommended free online textbook supporting the weekly laboratory notebooks.
 
-> **Reference:** Tenkanen, H., Heikinheimo, V. and Whipp, D. (2025) *Introduction to Python for Geographic Data Analysis* [e-book]. Available at: [https://pythongis.org/](https://pythongis.org/) (Accessed: 12 September 2026).
+Selected sections will be signposted during the course. You are **not expected to read or complete the entire book**.
 
-### Additional learning resources
+> **Reference:** Tenkanen, H., Heikinheimo, V. and Whipp, D. (2025) *Introduction to Python for Geographic Data Analysis* [e-book]. Available at: https://pythongis.org/
 
-#### [Project Pythia Foundations](https://foundations.projectpythia.org/)
+## Additional learning resources
 
-Project Pythia is a community learning resource for Python-based computing in the geosciences. It provides open tutorials covering:
+### Project Pythia Foundations
 
-- NumPy and Pandas;
+https://foundations.projectpythia.org/
+
+Project Pythia provides open tutorials for Python-based computing in the geosciences, including:
+
+- NumPy;
+- Pandas;
 - dates and calendars;
 - Matplotlib;
 - NetCDF and Xarray;
 - Cartopy;
 - Git and GitHub.
 
-> **Best suited to:** MSc Climate Change, Earth Science, GIS and Remote Sensing students who want to extend the material introduced in class.
+> **Best suited to:** students who want to extend the material introduced in class.
 
-#### [Python for Data Analysis, 3rd edition — Wes McKinney](https://wesmckinney.com/book/)
+### Python for Data Analysis — Wes McKinney
 
-A detailed open-access resource for Pandas and general data-analysis workflows. It covers:
+https://wesmckinney.com/book/
 
-- **Interacting with the outside world:** reading and writing common data formats;
-- **Preparation:** cleaning, combining, reshaping, selecting and transforming data;
-- **Transformation:** applying calculations, aggregations and grouped operations;
-- **Modelling and computation:** connecting data with statistical and computational tools;
-- **Presentation:** producing graphical and textual summaries.
+A detailed open-access resource for Pandas and general data-analysis workflows.
 
-> **Best suited to:** students and researchers who expect to use Pandas extensively. This is a reference and extension resource rather than required course reading.
+> **Best suited to:** students and researchers who expect to use Pandas extensively.
 
-### Package documentation and quick guides
+## Official documentation
 
-Official documentation provides the most complete and current information about each package. You are not expected to read it from beginning to end. Use it to look up particular functions, methods and examples.
+You are not expected to read package documentation from beginning to end.
 
-#### Python and Google Colab
+Use it when you need to look up a particular method, function or example.
 
-- [Official Python tutorial](https://docs.python.org/3/tutorial/)
-- [Google Colab frequently asked questions](https://research.google.com/colaboratory/faq.html)
+### Python and Google Colab
 
-#### NumPy
+- Python tutorial: https://docs.python.org/3/tutorial/
+- Google Colab FAQ: https://research.google.com/colaboratory/faq.html
 
-- [NumPy documentation](https://numpy.org/doc/stable/)
-- [NumPy quickstart](https://numpy.org/doc/stable/user/quickstart.html)
+### NumPy
 
-#### Pandas
+- NumPy documentation: https://numpy.org/doc/stable/
+- NumPy quickstart: https://numpy.org/doc/stable/user/quickstart.html
 
-- [Pandas user guide](https://pandas.pydata.org/pandas-docs/stable/user_guide/)
-- [10 minutes to Pandas](https://pandas.pydata.org/pandas-docs/stable/user_guide/10min.html)
-- [Pandas data-wrangling cheat sheet (PDF)](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf)
-- [Pandas for spreadsheet users](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_spreadsheets.html)
-- [Pandas for R users](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html)
+### Pandas
 
-#### Matplotlib
+- Pandas user guide: https://pandas.pydata.org/pandas-docs/stable/user_guide/
+- 10 minutes to Pandas: https://pandas.pydata.org/pandas-docs/stable/user_guide/10min.html
+- Pandas cheat sheet: https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf
+- Pandas for spreadsheet users: https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_spreadsheets.html
+- Pandas for R users: https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html
 
-- [Matplotlib documentation](https://matplotlib.org/stable/)
-- [Matplotlib cheat sheets and handouts](https://matplotlib.org/cheatsheets/)
+### Matplotlib
 
-#### Xarray
+- Matplotlib documentation: https://matplotlib.org/stable/
+- Matplotlib cheat sheets: https://matplotlib.org/cheatsheets/
 
-- [Xarray documentation](https://docs.xarray.dev/en/stable/)
-- [Xarray in 45 minutes](https://tutorial.xarray.dev/overview/xarray-in-45-min.html)
+### Xarray
+
+- Xarray documentation: https://docs.xarray.dev/en/stable/
+- Xarray in 45 minutes: https://tutorial.xarray.dev/overview/xarray-in-45-min.html
 
 ---
 
-## About this guide
+# About this guide
 
-This is a living reference. Examples and links may be refined as the courses develop. Corrections and suggestions are welcome.
+This is a **living reference** and will develop alongside the course.
+
+The weekly notebooks are the main route through the module. Use this guide when you need to **remember syntax, revisit something introduced in class, or find out where to look next**.
+
+Corrections and suggestions are welcome.
 
 Maintained by **Shaun Harrigan**, ICARUS Climate Research Centre, Department of Geography, Maynooth University.
