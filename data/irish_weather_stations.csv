@@ -1,0 +1,6 @@
+station_id,station_name,county,elevation_m,precipitation_mm,temperature_DegC,air_frost_days
+001,Malin Head,Donegal,22,1094.2,9.6,8.4
+002,Dublin Airport,Dublin,71,734.7,9.8,23.7
+003,Birr,Offaly,-72,820.6,9.6,39.1
+004,Cork Airport,Cork,155,1222.9,9.7,18.7
+005,Belmullet,Mayo,9,1197.8,10.0,13.6
