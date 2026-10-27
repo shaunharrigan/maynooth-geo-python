@@ -512,7 +512,7 @@ You will encounter several slightly different ways of asking Python to do someth
 ```python
 print(temperature)          # function
 
-temperature.mean()          # method
+df["temperature"].mean()    # method
 
 df.shape                    # attribute
 
@@ -530,10 +530,10 @@ object.method()
 For example:
 
 ```python
-temperature.mean()
+df["temperature"].mean()
 ```
 
-means: calculate the mean of the object called `temperature`.
+means: calculate the mean of the `temperature` column in a DataFrame.
 
 ## Defining a simple function
 
@@ -783,6 +783,30 @@ For Pandas filters:
 
 Put individual comparisons inside parentheses.
 
+## Filter using a list of values
+
+To select observations belonging to any of several categories, use `.isin()`:
+
+```python
+selected = df[df["region"].isin(["Leinster", "Munster"])]
+```
+
+## Sort observations
+
+Sort a DataFrame by a column:
+
+```python
+sorted_df = df.sort_values("temperature")            # lowest to highest
+sorted_df = df.sort_values("temperature", ascending=False)  # highest to lowest
+```
+
+To sort a Series of calculated results, use `.sort_values()` without a column name:
+
+```python
+mean_by_region = df.groupby("region")["temperature"].mean()
+mean_by_region.sort_values()
+```
+
 ## Missing values
 
 Count missing values:
@@ -848,6 +872,12 @@ Dates should normally be stored as dates rather than ordinary text.
 df["date"] = pd.to_datetime(df["date"])
 ```
 
+If dates use a known format, specify it explicitly. For example, for day/month/year dates:
+
+```python
+df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
+```
+
 Use dates as the DataFrame index:
 
 ```python
@@ -874,6 +904,12 @@ Calculate monthly mean temperature:
 
 ```python
 monthly_temperature = df["temperature"].resample("MS").mean()
+```
+
+Calculate annual mean temperature:
+
+```python
+annual_temperature = df["temperature"].resample("YS").mean()
 ```
 
 Calculate annual precipitation totals:
@@ -1139,6 +1175,39 @@ ax.plot(day, temperature, marker="o", linestyle="--")
 
 > **Tip:** Change one thing at a time, rerun the cell and look at what happens.
 
+## Compare distributions and relationships
+
+A **histogram** shows how values are distributed:
+
+```python
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.hist(df["temperature"], bins=15)
+ax.set(xlabel="Temperature (°C)", ylabel="Number of observations")
+plt.show()
+```
+
+A **boxplot** can compare the distributions of two groups:
+
+```python
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.boxplot([group_a, group_b], tick_labels=["Group A", "Group B"])
+ax.set(ylabel="Value")
+plt.show()
+```
+
+Here, `group_a` and `group_b` are collections of numerical values that you have selected.
+
+A **scatter plot** helps explore the relationship between two numerical variables:
+
+```python
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.scatter(df["temperature"], df["precipitation"], alpha=0.5)
+ax.set(xlabel="Temperature (°C)", ylabel="Precipitation (mm)")
+plt.show()
+```
+
+Look for overall patterns, clusters and unusual observations. A visible relationship does **not** necessarily mean that one variable causes the other.
+
 ## Plot spatial Xarray data
 
 ```python
@@ -1288,7 +1357,7 @@ Generative AI can support learning and professional data analysis, but it can al
 
 You remain responsible for every line of code and every result in your notebook.
 
-> **Important:** Module-specific assessment rules always take precedence over this general guidance.
+> **Important:** **Generative AI is not permitted for Assignment 1 in GY674/GY675**, including generating or debugging code and writing interpretations. The general guidance below is for learning activities where AI use is permitted; assessment-specific rules always take precedence.
 
 ## Appropriate learning uses
 
