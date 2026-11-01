@@ -18,12 +18,13 @@ The guide contains material from across the whole module, so **you are not expec
 4. [NumPy arrays](#4-numpy-arrays)
 5. [Pandas and tabular data](#5-pandas-and-tabular-data)
 6. [Dates and time series](#6-dates-and-time-series)
-7. [Xarray and multidimensional data](#7-xarray-and-multidimensional-data)
-8. [Data visualisation](#8-data-visualisation)
-9. [Errors and debugging](#9-errors-and-debugging)
-10. [Reproducible notebooks and GitHub](#10-reproducible-notebooks-and-github)
-11. [Using generative AI responsibly](#11-using-generative-ai-responsibly)
-12. [Learning resources and documentation](#12-learning-resources-and-documentation)
+7. [Vector data and GeoPandas](#7-vector-data-and-geopandas)
+8. [Xarray and multidimensional data](#8-xarray-and-multidimensional-data)
+9. [Data visualisation](#9-data-visualisation)
+10. [Errors and debugging](#10-errors-and-debugging)
+11. [Reproducible notebooks and GitHub](#11-reproducible-notebooks-and-github)
+12. [Using generative AI responsibly](#12-using-generative-ai-responsibly)
+13. [Learning resources and documentation](#13-learning-resources-and-documentation)
 
 ---
 
@@ -165,16 +166,20 @@ Common packages used in this module are:
 ```python
 import numpy as np
 import pandas as pd
+import geopandas as gpd
+import rasterio
 import xarray as xr
 import matplotlib.pyplot as plt
 ```
 
-These shortened names are standard conventions:
+These names and aliases are standard conventions:
 
 | Package | Short name | Used for |
 |---|---|---|
 | NumPy | `np` | Numerical arrays and calculations |
 | Pandas | `pd` | Tabular data |
+| GeoPandas | `gpd` | Vector spatial data (points, lines and polygons) |
+| Rasterio | `rasterio` | Raster spatial data (e.g. GeoTIFF elevation grids) |
 | Xarray | `xr` | Multidimensional Earth science data |
 | Matplotlib | `plt` | Data visualisation |
 
@@ -928,7 +933,96 @@ rolling_temperature = df["temperature"].rolling(30).mean()
 
 ---
 
-# 7. Xarray and multidimensional data
+# 7. Vector data and GeoPandas
+
+**GeoPandas** extends Pandas to work with vector data: **points, lines and polygons**. A **GeoDataFrame** is like a DataFrame, but includes a `geometry` column describing geographical features.
+
+## Read and inspect vector data
+
+```python
+import geopandas as gpd
+
+ed_gdf = gpd.read_file("electoral_divisions.gpkg")  # GeoPackage
+# gpd.read_file("boundaries.shp")                    # Shapefile
+
+ed_gdf.head()       # preview attributes and geometry
+ed_gdf.columns      # column names
+ed_gdf.shape        # rows and columns
+ed_gdf.plot()       # quick map
+```
+
+Most Pandas operations, including filtering, `.isna()` and `.merge()`, also work with GeoDataFrames.
+
+## Check and transform the CRS
+
+A **Coordinate Reference System (CRS)** defines how coordinates relate to locations on Earth.
+
+```python
+ed_gdf.crs                                # inspect CRS
+ed_gdf = ed_gdf.to_crs("EPSG:2157")       # transform to Irish Transverse Mercator
+```
+
+- `EPSG:2157` — Irish Transverse Mercator (ITM); Eastings/Northings in metres.
+- `EPSG:4326` — WGS 84; longitude/latitude in degrees.
+
+**Remember:** `.to_crs()` transforms coordinates; `.set_crs()` assigns a CRS without transforming them. Match CRSs before combining spatial layers.
+
+## Join attributes to polygons
+
+```python
+pobal_df = pd.read_csv("pobal.csv", dtype={"ED_ID_STR": str})
+pobal_df["ED_ID_STR"] = pobal_df["ED_ID_STR"].str.zfill(6)
+
+ed_deprivation_gdf = ed_gdf.merge(
+    pobal_df, on="ED_ID_STR", how="left"
+)
+
+ed_deprivation_gdf.isna().sum()  # check missing values after joining
+```
+
+A left merge retains all ED boundaries. Check that identifiers match, including leading zeros.
+
+## Map and summarise polygons
+
+```python
+# Choropleth: colour polygons by a numerical attribute
+ed_deprivation_gdf.plot(
+    column="Deprivation_score", cmap="RdBu", legend=True
+)
+
+# Dissolve EDs into counties and calculate mean ED score
+mean_depriv_county = ed_deprivation_gdf.dissolve(
+    by="COUNTY", aggfunc={"Deprivation_score": "mean"}
+)
+```
+
+`cmap` selects a Matplotlib colormap. `.dissolve()` combines polygons by category and aggregates attributes. Here the county mean is **unweighted across EDs**, not a population-weighted deprivation score.
+
+## Combine map layers and save
+
+```python
+fig, ax = plt.subplots(figsize=(8, 9))
+
+mean_depriv_county.plot(ax=ax, color="lightgrey", zorder=1)
+rail_gdf.to_crs(mean_depriv_county.crs).plot(
+    ax=ax, color="darkgreen", zorder=2
+)
+stations_gdf.to_crs(mean_depriv_county.crs).plot(
+    ax=ax, color="red", markersize=20, zorder=3
+)
+
+ax.set_axis_off()
+fig.savefig("map.png", dpi=300, bbox_inches="tight")
+plt.show()
+```
+
+`zorder` controls which layers appear on top. For interactive maps, try `ed_gdf.explore()` (requires the optional interactive-mapping dependencies).
+
+> **Key idea:** GeoPandas combines familiar Pandas-style tables with geometry, coordinate systems and spatial mapping.
+
+---
+
+# 8. Xarray and multidimensional data
 
 Xarray is particularly useful for climate, hydrological and other gridded Earth-system data.
 
@@ -1069,7 +1163,7 @@ precipitation_mm = precipitation_m * 1000
 
 ---
 
-# 8. Data visualisation
+# 9. Data visualisation
 
 A good figure should communicate the data clearly.
 
@@ -1256,7 +1350,7 @@ Before considering a figure finished, ask:
 
 ---
 
-# 9. Errors and debugging
+# 10. Errors and debugging
 
 Errors are a normal part of programming.
 
@@ -1316,7 +1410,7 @@ temperature.dims
 
 ---
 
-# 10. Reproducible notebooks and GitHub
+# 11. Reproducible notebooks and GitHub
 
 A reproducible notebook should allow another person — or your future self — to understand what you did and recreate the analysis.
 
@@ -1351,7 +1445,7 @@ Do not commit passwords, API keys, personal data or restricted datasets to GitHu
 
 ---
 
-# 11. Using generative AI responsibly
+# 12. Using generative AI responsibly
 
 Generative AI can support learning and professional data analysis, but it can also hide gaps in understanding.
 
@@ -1388,7 +1482,7 @@ The aim is not simply to produce working code. The aim is to understand what the
 
 ---
 
-# 12. Learning resources and documentation
+# 13. Learning resources and documentation
 
 The weekly course notebooks provide the main structured route through the course.
 
@@ -1460,6 +1554,16 @@ Use it when you need to look up a particular method, function or example.
 
 - Matplotlib documentation: https://matplotlib.org/stable/
 - Matplotlib cheat sheets: https://matplotlib.org/cheatsheets/
+
+### GeoPandas
+
+- GeoPandas documentation: https://geopandas.org/en/stable/
+- Getting started with GeoPandas: https://geopandas.org/en/stable/getting_started/introduction.html
+- GeoPandas user guide: https://geopandas.org/en/stable/docs/user_guide.html
+- Mapping and plotting: https://geopandas.org/en/stable/docs/user_guide/mapping.html
+- Merging data: https://geopandas.org/en/stable/docs/user_guide/mergingdata.html
+- Coordinate reference systems: https://geopandas.org/en/stable/docs/user_guide/projections.html
+- Dissolving geometries: https://geopandas.org/en/stable/docs/user_guide/aggregation_with_dissolve.html
 
 ### Xarray
 
