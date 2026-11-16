@@ -1,6 +1,6 @@
 # Python Quick Reference Guide
 
-Practical Python for geographical data analysis using Google Colab, NumPy, Pandas, Xarray and Matplotlib.
+Practical Python for geographical data analysis using Google Colab, NumPy, Pandas, GeoPandas, Xarray and Matplotlib, including loops, conditionals and automation.
 
 This guide supports **GY674: Earth Science Data Analysis in Python** and **GY675: Visualising Inequality** at Maynooth University. It is also intended as a useful starting point for postgraduate researchers and staff who are new to Python.
 
@@ -490,25 +490,100 @@ is_valid = (temperature > -50) and (temperature < 60)
 
 Pandas filters use `&`, `|` and `~` instead, as shown later.
 
-## Conditions and loops
+## Conditions, loops and automation
 
-An `if` statement runs code when a condition is true:
+Loops and conditionals allow us to **repeat operations and make decisions automatically**, particularly when analysing several datasets.
 
-```python
-if temperature > 20:
-    print("Warm")
-else:
-    print("Not warm")
-```
+### For loops
 
-A `for` loop repeats an operation:
+A `for` loop repeats an operation for each item in a sequence:
 
 ```python
+stations = ["Athens", "Dublin", "Madrid"]
+
 for station in stations:
     print(station)
 ```
 
-> **Important:** Indentation is part of Python syntax.
+The variable `station` takes a new value each time through the loop. The colon `:` starts the loop, and **indentation** identifies the code that is repeated.
+
+### Using `range()`
+
+Use `range()` to work through a sequence of numbers:
+
+```python
+for year in range(2020, 2025):
+    print(year)
+```
+
+This prints 2020 through 2024. **The stop value is not included.** `range(10)` represents 0 through 9; use `list(range(10))` to display those values together.
+
+### `if`, `elif` and `else`
+
+Conditions allow Python to choose which code to run:
+
+```python
+temperature = 20
+
+if temperature >= 30:
+    print("Hot day")
+elif temperature >= 15:
+    print("Mild day")
+else:
+    print("Cold day")
+```
+
+Python checks conditions **in order**. Only the first matching branch runs; `else` runs if none match.
+
+### Combine a loop and a conditional
+
+```python
+temperatures = [12, 18, 25, 31, 9]
+
+for temp in temperatures:
+    if temp >= 30:
+        print(temp, "Hot day")
+    else:
+        print(temp, "Not a hot day")
+```
+
+Notice the **two levels of indentation**: the conditional sits inside the loop, and its actions sit inside the conditional.
+
+### F-strings and changing filenames
+
+An **f-string** inserts a variable's value into text using curly brackets `{}`:
+
+```python
+city = "Dublin"
+filename = f"era5_{city}_daily.csv"
+print(filename)  # era5_Dublin_daily.csv
+```
+
+This is useful for filenames, plot titles and messages that change on each iteration.
+
+### Automate checks across CSV files
+
+```python
+import pandas as pd
+
+cities = ["Athens", "Bergen", "Dublin", "Helsinki", "Madrid"]
+
+# data_dir is the folder containing the CSV files
+for city in cities:
+    filename = f"era5_{city}_daily.csv"
+    df = pd.read_csv(data_dir + filename)
+
+    missing = df["precipitation_mm"].isna().sum()
+
+    if missing > 0:
+        print(f"{city}: {missing} missing precipitation values")
+    else:
+        print(f"{city}: No missing precipitation values")
+```
+
+Here, `data_dir` must already be defined as the path to the folder, ending with `/`. The loop reads each dataset, and the conditional reports whether any precipitation values are missing.
+
+> **Key idea:** A loop repeats an analysis; a conditional makes decisions; together they let us automate workflows across many datasets. Code **inside** a loop runs on each iteration; code **after** the loop runs once.
 
 ## Functions, methods and attributes
 
@@ -1024,142 +1099,159 @@ plt.show()
 
 # 8. Xarray and multidimensional data
 
-Xarray is particularly useful for climate, hydrological and other gridded Earth-system data.
+Xarray is particularly useful for **labelled multidimensional Earth-system data**, including ERA5 gridded climate data stored in **netCDF (`.nc`)** files. Unlike a simple table, a gridded dataset can vary across **time, latitude and longitude**.
 
-## Open a dataset
+## Open an ERA5 netCDF dataset
 
 ```python
 import xarray as xr
 
-ds = xr.open_dataset("climate_data.nc")
+ds = xr.open_dataset("era5_temperature.nc")
 ```
 
-## Inspect a dataset
+Replace the example filename with the path to your own file. `ds` is an Xarray **Dataset**, which can contain multiple variables.
+
+## Explore the dataset
 
 ```python
-ds
+ds                 # overview of the dataset
+ds.data_vars       # available variables
+ds.dims            # dimensions and their sizes
+ds.coords          # coordinate labels
+ds.attrs           # dataset metadata
 ```
 
-displays an overview of the complete dataset.
+An Xarray **DataArray** is one labelled variable; a **Dataset** groups related variables. Typical ERA5 coordinates are `time`, `latitude` and `longitude`, but always inspect the file rather than assuming its structure.
 
-Useful attributes include:
+## Select ERA5 temperature and convert units
+
+ERA5 2-metre air temperature is commonly stored as `t2m` in **kelvin (K)**:
 
 ```python
-ds.data_vars   # data variables
-
-ds.coords      # coordinates
-
-ds.dims        # dimensions
-
-ds.attrs       # metadata
+temperature_k = ds["t2m"]
+temperature_c = temperature_k - 273.15
 ```
 
-A **Dataset** can contain several related variables.
-
-A **DataArray** represents one labelled variable.
-
-Dimensions might include:
-
-- time;
-- latitude;
-- longitude.
-
-## Select a variable
+Check the variable's attributes and units before converting:
 
 ```python
-temperature = ds["temperature"]
+ds["t2m"].attrs
 ```
 
-## Select a time period
+## Select dates and locations with `.sel()`
+
+Select one date (or timestamp present in your dataset):
 
 ```python
-period = temperature.sel(
-    time=slice("2001", "2020")
-)
+one_day = temperature_c.sel(time="2022-08-01")
 ```
 
-## Select a location
+Select a period:
 
 ```python
-maynooth = temperature.sel(
+period = temperature_c.sel(time=slice("2001", "2020"))
+```
+
+Select the grid cell nearest to Maynooth:
+
+```python
+maynooth = temperature_c.sel(
     latitude=53.38,
     longitude=-6.59,
     method="nearest"
 )
 ```
 
-## Select an area
+Select a geographical area (check coordinate order first):
 
 ```python
-ireland = temperature.sel(
+ireland = temperature_c.sel(
     latitude=slice(55.5, 51.0),
     longitude=slice(-11.0, -5.0)
 )
 ```
 
-Latitude can run north-to-south or south-to-north. Always inspect the coordinate before defining a slice.
+> **Remember:** `.sel()` uses coordinate **labels** (such as dates and latitude/longitude), not integer positions. Latitude may increase or decrease depending on the dataset; inspect `ds.latitude` before slicing.
 
-## Calculate across dimensions
+## Calculate averages across dimensions
 
-```python
-temperature.mean()
-```
+The dimension named in `.mean(dim=...)` is the one you **average over**.
 
-calculates a mean across every dimension.
-
-To calculate the mean through time:
+Average through time to produce a map of mean temperature:
 
 ```python
-temperature.mean(dim="time")
+mean_map = temperature_c.mean(dim="time")
 ```
 
-Maximum through time:
+Average over latitude and longitude to produce a time series of spatial mean temperature:
 
 ```python
-temperature.max(dim="time")
+spatial_mean = temperature_c.mean(dim=["latitude", "longitude"])
 ```
 
-## Resample and calculate anomalies
-
-```python
-monthly = temperature.resample(time="MS").mean()
-```
+Calculate annual means of that spatial-mean time series:
 
 ```python
-anomaly = temperature - temperature.mean(dim="time")
+annual_mean = spatial_mean.resample(time="YS").mean()
 ```
+
+**Scientific check:** This is an unweighted mean of grid cells. For a physically representative regional or global area mean on a latitude–longitude grid, grid-cell area weighting may be required.
+
+## Create a map and a time-series plot
+
+Xarray has convenient built-in plotting methods using Matplotlib:
+
+```python
+import matplotlib.pyplot as plt
+
+# Temperature map for one date
+one_day.plot()
+plt.title("ERA5 2-metre temperature (°C)")
+plt.show()
+```
+
+```python
+# Annual spatial-mean temperature time series
+annual_mean.plot()
+plt.title("Annual mean ERA5 temperature")
+plt.ylabel("Temperature (°C)")
+plt.show()
+```
+
+## Calculate a climatology and anomalies
+
+For a dataset covering the reference period, calculate a **1991–2020 mean temperature at each grid cell**:
+
+```python
+baseline = temperature_c.sel(time=slice("1991", "2020"))
+climatology = baseline.mean(dim="time")
+```
+
+Subtract the climatology to obtain temperature departures from that reference mean:
+
+```python
+anomalies = temperature_c - climatology
+```
+
+This is a **single 1991–2020 mean for each grid cell**, not a separate seasonal or day-of-year climatology. Only use the 1991–2020 baseline if your dataset actually covers that period.
 
 ## Inspect before calculating
 
-Useful checks include:
-
 ```python
-temperature.dims
-
-temperature.shape
-
-temperature.coords
-
-temperature.attrs
+temperature_c.dims
+temperature_c.shape
+temperature_c.coords
+temperature_c.attrs
 ```
 
-These help you understand what the data represent before performing calculations.
-
-## Common climate unit conversions
-
-Kelvin to degrees Celsius:
+Common climate unit conversions:
 
 ```python
-temperature_c = temperature_k - 273.15
+temperature_c = temperature_k - 273.15  # K to °C
+precipitation_mm = precipitation_m * 1000  # m to mm
 ```
 
-Metres to millimetres:
-
-```python
-precipitation_mm = precipitation_m * 1000
-```
-
-> **Scientific check:** Always check the variable metadata and units before converting or aggregating data.
+> **Key idea from Lab 6:** **Read → Explore → Select → Analyse → Visualise.** Xarray lets you work with 3D gridded climate data using familiar labels and operations. Always check dimensions, units, spatial coverage and the period of record before interpreting results.
 
 ---
 
